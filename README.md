@@ -10,6 +10,14 @@ curl -fsSL https://raw.githubusercontent.com/cevo1466/mobile-release-guard/main/
 
 This copies the skill to `~/.claude/skills/mobile-release-guard/` (an existing install is backed up). Restart Claude Code afterwards. Read `install.sh` first if you prefer; it only downloads this repo and copies one folder.
 
+### Install through your AI assistant
+
+Paste this into Claude Code (or any assistant that can run shell commands):
+
+> Install the mobile-release-guard skill by running `curl -fsSL https://raw.githubusercontent.com/cevo1466/mobile-release-guard/main/install.sh | bash`, then tell me to restart.
+
+To use another skills directory, set `CLAUDE_SKILLS_DIR` (the installer copies the folder to `$CLAUDE_SKILLS_DIR/mobile-release-guard`); only the default `~/.claude/skills` is tested.
+
 ## Use
 
 | Command | What it does |
