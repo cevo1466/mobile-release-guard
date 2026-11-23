@@ -1,0 +1,4 @@
+name: demo
+dependencies:
+  firebase_auth: any
+  firebase_app_check: any
