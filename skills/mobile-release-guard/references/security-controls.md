@@ -2,6 +2,7 @@
 
 Her kontrol: **Koşul** (ne zaman uygulanır, değilse NOT_APPLICABLE) · **Ara** (grep/okuma ipuçları) · **Ölçüt** (PASS/FAIL) · **Dikkat** (yanlış pozitif) · **Test**.
 Sunucu tarafı kanıt (backend kodu, RLS, Security Rules) yoksa istemci bulgusu tek başına PASS vermez → UNVERIFIED veya PARTIAL.
+**Düzeltme yönü (`fix`):** Güvenle yapılabilir: yerel depoyu Keychain/Keystore'a taşıma, `allowBackup`/R8/ATS ayarı, boş izin metni, `.gitignore`, kullanılmayan izin kaldırma, sunucu kodunda sahiplik/allowlist ekleme (testle). Açık onay ister: RLS/Security Rules'u production'a uygulama, token ömrü/oturum iptali davranışı, ödeme/entitlement mantığı, secret döndürme, CI/deploy değişikliği, mimari taşıma (örn. AI çağrısını backend'e alma).
 Secret değerlerini asla raporlama; yalnızca dosya:satır ve tür.
 
 ## SEC-01 — Nesnenin sahibini sor
@@ -24,7 +25,7 @@ Secret değerlerini asla raporlama; yalnızca dosya:satır ve tür.
 
 ## SEC-04 — Çıkışta oturumu düşür
 **Koşul:** Hesap/oturum sistemi var.
-**Ara:** Logout fonksiyonu: Keychain/Keystore temizliği, sunucu `signOut`/revoke çağrısı, push token/cihaz kaydı silme, önbelleğe alınmış kullanıcı verisi.
+**Ara:** Logout fonksiyonu: Keychain/Keystore temizliği, sunucu `signOut`/revoke çağrısı, push token/cihaz kaydı silme, önbelleğe alınmış kullanıcı verisi; cihazlar arası oturum yönetimi (diğer cihazlardaki oturumları listeleme/sonlandırma, parola değişiminde toplu iptal).
 **Ölçüt:** Yerel kimlik bilgisi silinir + sunucu tarafı iptal → PASS; yalnızca login ekranına yönlendirme → FAIL/PARTIAL.
 **Test:** Logout sonrası eski refresh token ile yenileme başarısız olmalı.
 
@@ -86,7 +87,7 @@ Secret değerlerini asla raporlama; yalnızca dosya:satır ve tür.
 
 ## SEC-16 — Token'ı kasaya koy
 **Koşul:** Token/session secret saklanıyor.
-**Ara:** Keychain (`kSecAttrAccessible…`), Android Keystore/EncryptedSharedPreferences, `flutter_secure_storage`, `expo-secure-store`; log/crash raporu/backup'ta token.
+**Ara:** Keychain (`kSecAttrAccessible…`), Android Keystore/EncryptedSharedPreferences, `flutter_secure_storage`, `expo-secure-store`; log, crash raporu, analytics, debug çıktısı ve yedekte (SEC-17) token ifşası.
 **Ölçüt:** Güvenli depo → PASS; düz depo veya log'a yazım → FAIL.
 
 ## SEC-17 — Yedeklemeyi kapat
@@ -111,12 +112,12 @@ Secret değerlerini asla raporlama; yalnızca dosya:satır ve tür.
 
 ## SEC-21 — .env'i kapat
 **Koşul:** Env/secret dosyaları veya CI secret'ları var.
-**Ara:** `.gitignore` kapsamı, repoya eklenmiş `.env*`, `git ls-files | grep -i env`, istemci paketine giren env değişkenleri (`EXPO_PUBLIC_*`, `--dart-define` değerleri), CI secret ayrımı.
+**Ara:** `.gitignore` kapsamı, repoya eklenmiş `.env*`, `git ls-files | grep -i env`, istemci paketine giren env değişkenleri (`EXPO_PUBLIC_*`, `--dart-define` değerleri), CI secret ayrımı, dev/staging/production ortam ayrımı (aynı anahtar her ortamda mı), secret rotation planı/izi. `scripts/scan_secrets.sh <dizin>` yalnızca dosya:satır ve tür verir.
 **Ölçüt:** Her `.env` değeri secret değildir; gerçek secret repoda/pakette → FAIL. Production secret'ını rapora yazma.
 
 ## SEC-22 — Paketleri dondur
 **Koşul:** Bağımlılık yöneticisi var.
-**Ara:** Lockfile varlığı/commit'i (`Package.resolved`, `Podfile.lock`, `package-lock.json`/`pnpm-lock.yaml`/`yarn.lock`, `pubspec.lock`, Gradle lock/version catalog), `^`/`latest`/`*` aralıkları, git/URL bağımlılıkları, bilinen CVE (araç varsa `npm audit` vb.; kurma).
+**Ara:** Lockfile varlığı/commit'i (`Package.resolved`, `Podfile.lock`, `package-lock.json`/`pnpm-lock.yaml`/`yarn.lock`, `pubspec.lock`, Gradle lock/version catalog), `^`/`latest`/`*` aralıkları, git/URL bağımlılıkları, dependency confusion (özel paket adının genel kayıt defterinde de bulunması, scope'suz iç paketler), typosquatting, bilinen CVE (araç varsa `npm audit` vb.; kurma).
 **Ölçüt:** Lockfile + sabit sürüm → PASS. Toplu sürüm yükseltmesi yapma.
 
 ## SEC-23 — Kurulum script'ini kes

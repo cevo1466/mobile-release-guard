@@ -61,6 +61,13 @@ has_text "anthropic" "package.json" "*.py" "*.swift" "*.kt" "pubspec.yaml" && ad
 has_text "generativelanguage" "*.swift" "*.kt" "*.py" "*.js" "*.ts" && add llm-api
 has_file wrangler.toml && add cloudflare-workers
 { has_file composer.json && has_text laravel composer.json; } && add laravel
+has_text '"@nestjs/core"' package.json && add nestjs
+has_text '"express"' package.json && add express
+{ has_text '"graphql"' package.json || has_ext graphql || has_ext gql; } && add graphql
+has_text "fastapi" requirements.txt pyproject.toml "*.py" && { add fastapi; add python; }
+has_file composer.json && add php
+{ has_file serverless.yml || has_file serverless.yaml; } && add serverless
+[ -d "$dir/supabase/functions" ] && add supabase-edge-functions
 has_file .github && add github-actions
 [ -d "$dir/.github/workflows" ] && add github-actions
 

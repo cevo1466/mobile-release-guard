@@ -3,7 +3,17 @@ name: mobile-release-guard
 description: Mobil uygulama (iOS, Android, Flutter, React Native, Expo, Capacitor, KMP) için kanıt odaklı güvenlik ve App Store / Google Play yayın hazırlığı denetimi. Yalnızca /mobile-release-guard ile elle çağrılır. Varsayılan mod salt-okunurdur; kod değiştirmek için `fix` gerekir.
 argument-hint: "[audit|plan|fix|verify] [ios|android|all|security|appstore|googleplay|subscriptions|critical]"
 disable-model-invocation: true
-allowed-tools: Read, Grep, Glob, Bash(ls:*), Bash(find:*), Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(bash ~/.claude/skills/mobile-release-guard/scripts/detect_stack.sh:*)
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+  - Bash(ls:*)
+  - Bash(find:*)
+  - Bash(git status:*)
+  - Bash(git diff:*)
+  - Bash(git log:*)
+  - Bash(bash ~/.claude/skills/mobile-release-guard/scripts/detect_stack.sh:*)
+  - Bash(bash ~/.claude/skills/mobile-release-guard/scripts/scan_secrets.sh:*)
 ---
 
 # mobile-release-guard
@@ -21,7 +31,7 @@ Argümanlar: `$ARGUMENTS`
 
 ## 2. Proje tanıma (önce bu, düzeltme yok)
 
-`bash ~/.claude/skills/mobile-release-guard/scripts/detect_stack.sh .` çalıştır, ardından `references/stack-detection.md` ve README, CLAUDE.md, manifest, paket/build dosyalarını oku. Şunları belirle: ad/tür, diller, platformlar, framework, auth, roller, backend, veritabanı, API'ler, 3. parti servisler, ödeme/abonelik, Firebase/Supabase, AI/ücretli API, veri depoları, secret yönetimi, dev/staging/prod ayrımı, build/release, CI/CD, mevcut testler, mağaza metadata erişimi. Monorepo'da mobil / backend / admin modüllerini ayır. Projede olmayan özelliği varmış gibi kabul etme. Generated, vendor, `node_modules`, `Pods`, `build` klasörlerini tarama.
+`bash ~/.claude/skills/mobile-release-guard/scripts/detect_stack.sh .` çalıştır, ardından `references/stack-detection.md` ve README, CLAUDE.md, manifest, paket/build dosyalarını oku. Şunları belirle: ad/tür, diller, platformlar, framework, auth, roller, backend, veritabanı, API'ler, 3. parti servisler, ödeme/abonelik, Firebase/Supabase, AI/ücretli API, veri depoları, secret yönetimi, dev/staging/prod ayrımı, build/release, CI/CD, mevcut testler, mağaza metadata erişimi. Monorepo'da mobil / backend / admin modüllerini ayır. Mobil proje algılanmazsa (etiket yok, manifest/proje dosyası yok): kısa durum raporu ver, bulgu üretme, aranan işaretleri ve eksik girdiyi listele ve hangi klasörün denetleneceğini sor. Projede olmayan özelliği varmış gibi kabul etme. Generated, vendor, `node_modules`, `Pods`, `build` klasörlerini tarama. Birkaç dosyayla yetinme: ilgili veri akışını (istemci → API → DB/ödeme) uçtan uca izle; incelenemeyen alanları raporda listele. Secret taraması için `bash ~/.claude/skills/mobile-release-guard/scripts/scan_secrets.sh .` (yalnızca dosya:satır verir; bulguyu dosyayı okuyarak doğrula, değeri yazma).
 
 ## 3. Referans yükleme tablosu (yalnızca gerekeni oku)
 

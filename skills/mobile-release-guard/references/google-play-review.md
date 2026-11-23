@@ -30,7 +30,7 @@ Uygulama içi bağlantı ve konsol URL'si; içerik gerçek veri işleme ile uyum
 Manifest `uses-permission` ↔ gerçek kullanım; runtime isteme akışı ve gerekçe ekranı (SEC-20 ile birleştir).
 ## GP-14 — Hassas izinler
 SMS, Call Log, Tüm dosya erişimi (`MANAGE_EXTERNAL_STORAGE`), `QUERY_ALL_PACKAGES`, erişilebilirlik API'si gibi kısıtlı izinler için bildirim formu gerekliliği.
-## GP-15 — Arka plan konumu
+## GP-15 — Arka plan konumu (Background location)
 `ACCESS_BACKGROUND_LOCATION` kullanımı ve gerekçesi; yoksa NOT_APPLICABLE.
 ## GP-16 — Foreground service
 `foregroundServiceType` bildirimi ve izin; amaç beyanı; yoksa NOT_APPLICABLE.

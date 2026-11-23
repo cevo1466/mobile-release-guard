@@ -28,22 +28,22 @@ Demo hesap bilgilerini veya secret'ları repoya/rapora yazma.
 **Sınıf:** C (otomatik yenilenen abonelik) · **Ara:** Paywall'da fiyat, dönem, yenileme ve iptal bilgisi. Abonelik yoksa NOT_APPLICABLE.
 
 ## APP-09 — Paywall'da EULA yok
-**Sınıf:** C · **Ara:** Terms of Use/EULA ve Privacy bağlantıları; Apple standart EULA ile özel EULA'yı ayır.
+**Sınıf:** C (abonelik paywall'u varsa; yoksa NOT_APPLICABLE) · **Ara:** Terms of Use/EULA ve Privacy bağlantıları; Apple standart EULA ile özel EULA'yı ayır.
 
 ## APP-10 — Fiyat görünmüyor
-**Sınıf:** C · **Ara:** StoreKit `Product.products(for:)`/`SKProductsRequest`, ürün ID eşleşmesi, yükleme hatası ve boş durum, fiyatın `displayPrice`/`localizedPrice` ile gösterilmesi (hardcoded fiyat yetmez). Gerçek ürün kullanılabilirliği Connect/StoreKit test olmadan UNVERIFIED.
+**Sınıf:** C (IAP/abonelik yoksa NOT_APPLICABLE) · **Ara:** StoreKit `Product.products(for:)`/`SKProductsRequest`, ürün ID eşleşmesi, yükleme hatası ve boş durum, fiyatın `displayPrice`/`localizedPrice` ile gösterilmesi (hardcoded fiyat yetmez). Gerçek ürün kullanılabilirliği Connect/StoreKit test olmadan UNVERIFIED.
 
 ## APP-11 — Geri yükleme yok
-**Sınıf:** C (tüketilemez IAP/abonelik) · **Ara:** `AppStore.sync()`/`restoreCompletedTransactions`, `Transaction.currentEntitlements`, hesaplar arası entitlement eşitleme, "Restore Purchases" düğmesi.
+**Sınıf:** C (tüketilemez IAP/abonelik; yoksa NOT_APPLICABLE) · **Ara:** `AppStore.sync()`/`restoreCompletedTransactions`, `Transaction.currentEntitlements`, hesaplar arası entitlement eşitleme, "Restore Purchases" düğmesi.
 
 ## APP-12 — Dışarı ödeme linki
 **Sınıf:** C · **Ara:** Dijital içerik/abonelik için harici ödeme bağlantısı veya yönlendirme. Kural bölgeye ve uygulama türüne göre değişir; güncel kuralı doğrula, tüm harici bağlantıları otomatik yasaklı sayma.
 
 ## APP-13 — Hesap silme yok
-**Sınıf:** K (hesap oluşturma varsa) · **Ara:** Uygulama içi silme yolu, sunucu tarafı veri silme, abonelik etkisi, yeniden kimlik doğrulama. Logout silme değildir.
+**Sınıf:** K (hesap oluşturma varsa; hesap sistemi yoksa NOT_APPLICABLE) · **Ara:** Uygulama içi silme yolu, sunucu tarafı veri silme, abonelik etkisi, yeniden kimlik doğrulama. Logout silme değildir.
 
 ## APP-14 — Apple ile giriş yok
-**Sınıf:** C · **Ara:** Üçüncü taraf/sosyal giriş (Google, Facebook…) var mı; Sign in with Apple veya güncel kural kapsamındaki eşdeğer seçenek/istisna. Her uygulamada zorunlu varsayma.
+**Sınıf:** C (üçüncü taraf/sosyal giriş yoksa NOT_APPLICABLE) · **Ara:** Üçüncü taraf/sosyal giriş (Google, Facebook…) var mı; Sign in with Apple veya güncel kural kapsamındaki eşdeğer seçenek/istisna. Her uygulamada zorunlu varsayma.
 
 ## APP-15 — İzin metni boş
 **Sınıf:** K · **Ara:** Info.plist `NS…UsageDescription` boş/jenerik mi; kullanılan API ↔ tanımlı anahtar; gerçek kullanım açıklamayla uyumlu mu.

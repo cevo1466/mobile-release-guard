@@ -26,9 +26,17 @@ The skill is manual-only (`disable-model-invocation: true`).
 
 26 security controls (SEC-01..26), 24 App Store controls (APP-01..24), 25 Google Play controls (GP-01..25) and OWASP-based extras. Checks only run when the matching technology is detected; unverifiable items (backend, store consoles, devices) are reported as `UNVERIFIED`, never `PASS`.
 
-## Status
+## Status and verification
 
-Structural validation (`python3 skills/mobile-release-guard/scripts/validate_skill.py skills/mobile-release-guard`) and unit tests pass. Behavioral evals are defined in `skills/mobile-release-guard/evals/evals.json` (6 scenarios, 10 negative cases) but have not been run end-to-end yet.
+Verified by running them:
+- `python3 skills/mobile-release-guard/scripts/validate_skill.py skills/mobile-release-guard` (frontmatter, links, all SEC/APP IDs)
+- `cd skills/mobile-release-guard && python3 -m unittest discover -s tests` (30 tests: spec coverage, script behavior, secret redaction, stack detection on 7 fixtures)
+- `curl | bash` installer, tested into a temporary directory
+
+Not verified, be aware:
+- The 16 behavioral evals (`evals/evals.json`, 6 scenarios + 10 negative cases) are checked by a **static trace** (`tests/test_eval_mechanisms.py`: each expected behavior must be backed by a rule in the skill or a script that runs). They have **not** been run as live end-to-end model sessions.
+- App Store and Google Play rules were written from existing knowledge, not re-checked against the live policy pages; OWASP/CWE mappings are not web-verified. The skill itself tells the auditor to verify policies at run time and to report `UNVERIFIED` when it cannot.
+- Not tried on a real production app yet.
 
 ## Uninstall
 
