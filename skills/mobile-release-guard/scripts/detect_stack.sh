@@ -28,13 +28,13 @@ has_text "import SwiftUI" "*.swift" && add swiftui
 has_text "import UIKit" "*.swift" && add uikit
 has_ext m && add objective-c
 { has_file Package.swift || has_file Package.resolved; } && add swiftpm
-has_file Podfile && add cocoapods
-{ has_ext xcodeproj || has_ext xcworkspace; } && add xcode
+{ has_file Podfile || has_file Podfile.lock; } && add cocoapods
+{ has_ext xcodeproj || has_ext xcworkspace || has_file project.pbxproj; } && add xcode
 has_text "import StoreKit" "*.swift" "*.m" && add storekit
 # Android
 has_ext kt && add kotlin
 has_ext java && add java
-{ has_file build.gradle || has_file build.gradle.kts; } && add gradle
+{ has_file build.gradle || has_file build.gradle.kts || has_file settings.gradle || has_file settings.gradle.kts || has_file libs.versions.toml; } && add gradle
 has_file AndroidManifest.xml && add android
 has_text "androidx.compose" "*.kt" "*.kts" "*.gradle" && add compose
 has_text "com.android.billingclient" "*.kt" "*.java" "*.kts" "*.gradle" && add play-billing
@@ -48,6 +48,8 @@ if has_file package.json; then
   has_text '"@ionic/' package.json && add ionic
 fi
 has_file capacitor.config.json && add capacitor
+{ has_file app.json && has_text '"expo"' app.json; } && add expo
+{ has_file app.config.js || has_file app.config.ts; } && add expo
 has_text "kotlin(\"multiplatform\")" "*.kts" && add kotlin-multiplatform
 # Backend / services
 { has_file GoogleService-Info.plist || has_file google-services.json || has_file firebase.json || has_file firestore.rules; } && add firebase

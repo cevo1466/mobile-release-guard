@@ -29,3 +29,7 @@ Kök dizinden başla; `apps/`, `packages/`, `ios/`, `android/`, `server/`, `func
 ## Tanıma çıktısı (rapor A bölümü)
 
 Proje adı, platformlar, framework, backend, auth, ödeme, AI, denetim kapsamı, erişilemeyen alanlar (backend kodu yok, Connect/Console yok, cihaz testi yok).
+
+## Bilinen kör noktalar (etiketler ipucudur, kanıt değil)
+
+`detect_stack.sh` yalnızca dosya/dizin adlarına ve sabit metin eşleşmelerine bakar. Kaçırabilir: yeniden adlandırılmış manifestler, üretilmiş (generated) projeler, standart dışı dizin düzenleri, derinde gömülü veya `node_modules`/`build` gibi atlanan klasörlerdeki kod, README'de geçen ama kodda olmayan teknolojiler (bunlar etiket üretmez, doğru). Etiket çıkmaması "teknoloji yok" demek değildir: ilgili dosyayı elle ara (`Glob`/`Grep`). Etiket çıkması da yeterli değildir: kullanımı dosyayı okuyarak doğrula.

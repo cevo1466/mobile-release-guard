@@ -20,12 +20,14 @@ Demo hesap bilgilerini veya secret'ları repoya/rapora yazma.
 
 ## APP-06 — Etiket uyuşmuyor
 **Sınıf:** K · **Ara:** SDK/analytics/auth/reklam/veri toplama ↔ App Privacy beyanı; `PrivacyInfo.xcprivacy`. Connect erişimi yoksa nihai eşleşme UNVERIFIED.
+**Son doğrulama 2026-11-23:** Gönderimde her required-reason API kullanımı için onaylı neden (privacy manifest) gerekir; üçüncü taraf SDK manifest ve imzaları da denetlenir; güncel API/neden listesi değişebilir (arama özeti). https://developer.apple.com/news/?id=z6fu1dcu
 
 ## APP-07 — Destek linki ölü
 **Sınıf:** K · **Ara:** Support URL ve uygulama içi destek erişimi; canlı doğrulama yapılamadıysa UNVERIFIED.
 
 ## APP-08 — Abonelik bilgisi yok
 **Sınıf:** C (otomatik yenilenen abonelik) · **Ara:** Paywall'da fiyat, dönem, yenileme ve iptal bilgisi. Abonelik yoksa NOT_APPLICABLE.
+**Son doğrulama 2026-11-23 (arama özeti; tam metni sayfadan oku):** 3.1.2(a) abonelik sürekli değer sunmalı, en az 7 gün sürmeli, kullanıcının tüm cihazlarında erişilebilir olmalı; 3.1.2(c) abone olmadan önce fiyat karşılığı ne alınacağı açık anlatılmalı. https://developer.apple.com/app-store/review/guidelines/
 
 ## APP-09 — Paywall'da EULA yok
 **Sınıf:** C (abonelik paywall'u varsa; yoksa NOT_APPLICABLE) · **Ara:** Terms of Use/EULA ve Privacy bağlantıları; Apple standart EULA ile özel EULA'yı ayır.
@@ -35,21 +37,26 @@ Demo hesap bilgilerini veya secret'ları repoya/rapora yazma.
 
 ## APP-11 — Geri yükleme yok
 **Sınıf:** C (tüketilemez IAP/abonelik; yoksa NOT_APPLICABLE) · **Ara:** `AppStore.sync()`/`restoreCompletedTransactions`, `Transaction.currentEntitlements`, hesaplar arası entitlement eşitleme, "Restore Purchases" düğmesi.
+**Son doğrulama 2026-11-23:** 3.1.1 restorable IAP için restore mekanizması şart (arama özeti). Tüketilebilir ürünlerin StoreKit ile geri yüklenemediği yalnızca forum bilgisi: **Doğrulanamadı**. https://developer.apple.com/app-store/review/guidelines/
 
 ## APP-12 — Dışarı ödeme linki
 **Sınıf:** C · **Ara:** Dijital içerik/abonelik için harici ödeme bağlantısı veya yönlendirme. Kural bölgeye ve uygulama türüne göre değişir; güncel kuralı doğrula, tüm harici bağlantıları otomatik yasaklı sayma.
+**Son doğrulama 2026-11-23 (arama özeti):** ABD dışı storefront'larda StoreKit External Purchase Link entitlement'ı olmadan IAP dışına yönlendiren düğme/bağlantı/CTA konamaz; ABD storefront'unda bu entitlement gerekmez. AB, Güney Kore, Hollanda (flört uygulamaları) için ayrı şartlar var ve sık değişir: güncel sayfaya bak. https://developer.apple.com/app-store/review/guidelines/ · https://developer.apple.com/support/communication-and-promotion-of-offers-on-the-app-store-in-the-eu/
 
 ## APP-13 — Hesap silme yok
 **Sınıf:** K (hesap oluşturma varsa; hesap sistemi yoksa NOT_APPLICABLE) · **Ara:** Uygulama içi silme yolu, sunucu tarafı veri silme, abonelik etkisi, yeniden kimlik doğrulama. Logout silme değildir.
+**Son doğrulama 2026-11-23:** Hesap oluşturan uygulama hesabı uygulama içinden silmeyi başlatma yolu sunmalı (5.1.1(v)); devre dışı bırakma/dondurma yetmez; kolay bulunmalı; Sign in with Apple kullanılıyorsa silmede Sign in with Apple REST API ile token iptal edilmeli. Uygulama içi web view'in kabulü için resmî açıklama bulunamadı: **Doğrulanamadı**. https://developer.apple.com/news/?id=12m75xbj
 
 ## APP-14 — Apple ile giriş yok
 **Sınıf:** C (üçüncü taraf/sosyal giriş yoksa NOT_APPLICABLE) · **Ara:** Üçüncü taraf/sosyal giriş (Google, Facebook…) var mı; Sign in with Apple veya güncel kural kapsamındaki eşdeğer seçenek/istisna. Her uygulamada zorunlu varsayma.
+**Son doğrulama 2026-11-23:** Resmî guidelines sayfası aramada gelmedi; 4.8 için yalnızca forum alıntıları görüldü (üçüncü taraf/sosyal birincil giriş → Sign in with Apple veya eşdeğer servis; istisna listesi). Eşdeğer servis ölçütleri ve istisnalar: **Doğrulanamadı**, güncel 4.8 metnini sayfadan oku. https://developer.apple.com/app-store/review/guidelines/
 
 ## APP-15 — İzin metni boş
 **Sınıf:** K · **Ara:** Info.plist `NS…UsageDescription` boş/jenerik mi; kullanılan API ↔ tanımlı anahtar; gerçek kullanım açıklamayla uyumlu mu.
 
 ## APP-16 — Takip izni yok
 **Sınıf:** C · **Ara:** Takip tanımına giren kullanım (kullanıcıyı uygulamalar/siteler arası izleme, IDFA, veri aracıları) varsa ATT (`ATTrackingManager`) ve `NSUserTrackingUsageDescription`. Her analytics SDK'sını tracking sayma.
+**Son doğrulama 2026-11-23:** Takip = uygulamada toplanan kullanıcı/cihaz verisini başka şirketlerin uygulama/site/offline verileriyle hedefli reklam veya reklam ölçümü için ilişkilendirmek ya da veri komisyoncularıyla paylaşmak; izin ATT çerçevesiyle alınır, `NSUserTrackingUsageDescription` yoksa istem çökmeye yol açar. https://developer.apple.com/app-store/user-privacy-and-data-use/ · https://developer.apple.com/documentation/bundleresources/information-property-list/nsusertrackingusagedescription
 
 ## APP-17 — "Yakında" ekranı
 **Sınıf:** K (tamamlanmamış/çalışmayan özellik) · **Ara:** Çalışmayan düğme, boş ekran, vaat edilip yapılmamış özellik. Placeholder metni tek başına red sebebi değildir.

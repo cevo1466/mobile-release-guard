@@ -5,6 +5,29 @@ Sunucu tarafı kanıt (backend kodu, RLS, Security Rules) yoksa istemci bulgusu 
 **Düzeltme yönü (`fix`):** Güvenle yapılabilir: yerel depoyu Keychain/Keystore'a taşıma, `allowBackup`/R8/ATS ayarı, boş izin metni, `.gitignore`, kullanılmayan izin kaldırma, sunucu kodunda sahiplik/allowlist ekleme (testle). Açık onay ister: RLS/Security Rules'u production'a uygulama, token ömrü/oturum iptali davranışı, ödeme/entitlement mantığı, secret döndürme, CI/deploy değişikliği, mimari taşıma (örn. AI çağrısını backend'e alma).
 Secret değerlerini asla raporlama; yalnızca dosya:satır ve tür.
 
+## Standart eşleşmesi (MASVS / API Top 10)
+
+Kategori adları (MASVS: STORAGE, CRYPTO, AUTH, NETWORK, PLATFORM, CODE, RESILIENCE, PRIVACY) ve API Top 10 2023 başlıkları resmî sayfalarla 2026-11-23'te doğrulandı (https://mas.owasp.org/MASVS/ · https://owasp.org/API-Security/editions/2023/en/0x11-t10/). Hangi kontrolün hangi kategoriye düştüğü **yazarın değerlendirmesidir**, resmî bir eşleme tablosu değildir.
+
+| Kontrol | MASVS | API Top 10 (2023) |
+|---|---|---|
+| SEC-01 | AUTH | API1 Broken Object Level Authorization |
+| SEC-02 | — | API3 Broken Object Property Level Authorization |
+| SEC-03, 04, 08, 09 | AUTH | API2 Broken Authentication |
+| SEC-05 | AUTH | — |
+| SEC-06 | AUTH | API2, API4 |
+| SEC-10 | — | API4 Unrestricted Resource Consumption |
+| SEC-11 | — | API7 Server Side Request Forgery |
+| SEC-12, 17 | STORAGE | — |
+| SEC-13, 15 | RESILIENCE | — |
+| SEC-14, 21 | STORAGE, CRYPTO | API8 Security Misconfiguration |
+| SEC-16 | STORAGE, AUTH | — |
+| SEC-18, 20 | PLATFORM | — |
+| SEC-19 | NETWORK | API8 |
+| SEC-22, 23, 24 | CODE | — |
+| SEC-25 | — | API10 Unsafe Consumption of APIs |
+| SEC-26 | — | API5 Broken Function Level Authorization |
+
 ## SEC-01 — Nesnenin sahibini sor
 **Koşul:** Kullanıcıya ait nesne (profil, rezervasyon, ilerleme, dosya, abonelik) sunan backend/DB var.
 **Ara:** ID ile okuma/yazma endpoint'leri; Firebase `firestore.rules`/`storage.rules` (`request.auth.uid == resource.data.ownerId`); Supabase `ENABLE ROW LEVEL SECURITY` + policy `auth.uid()`; middleware'de sahiplik kontrolü.
