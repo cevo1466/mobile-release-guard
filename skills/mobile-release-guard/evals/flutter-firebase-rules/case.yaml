@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: flutter-firebase-rules
+expected_outcome: |
+  SEC-01 FAIL for allow read, write: if true in firestore.rules
+  SEC-13 PARTIAL/UNVERIFIED (client App Check present, enforcement not visible)
+  states App Check is not a substitute for authorization
+  separates client checks from server-side rules
+context:
+  scaffold_script: place-files.sh

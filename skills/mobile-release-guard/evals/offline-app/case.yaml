@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: offline-app
+expected_outcome: |
+  SEC-03/04/06/08/09/10/11/13/24/25/26 NOT_APPLICABLE
+  APP-08..11 and APP-13/14 NOT_APPLICABLE (no account, no IAP)
+  APP-24 NOT_APPLICABLE
+  no FAIL invented for missing backend/auth/subscription
+context:
+  scaffold_script: place-files.sh

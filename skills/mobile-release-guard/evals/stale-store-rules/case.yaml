@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: stale-store-rules
+expected_outcome: |
+  GP-01/GP-05 say current Play requirement could not be verified
+  no invented API level or Billing version numbers
+context:
+  scaffold_script: place-files.sh

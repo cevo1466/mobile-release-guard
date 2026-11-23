@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: rn-supabase-rls
+expected_outcome: |
+  detects React Native and Supabase
+  SEC-01 FAIL: table without ENABLE ROW LEVEL SECURITY / policies
+context:
+  scaffold_script: place-files.sh

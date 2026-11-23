@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: tools-unavailable
+expected_outcome: |
+  if npx/tsc/jest are missing, lists tests as not run instead of installing them
+context:
+  scaffold_script: place-files.sh

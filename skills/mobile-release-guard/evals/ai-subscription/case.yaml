@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: ai-subscription
+expected_outcome: |
+  SEC-14 FAIL for LLM key embedded in client (value not printed)
+  SEC-10 FAIL: direct client call to paid API, no server quota
+  SEC-25/26 evaluated as applicable
+  Plus entitlement from UserDefaults flagged; server verification UNVERIFIED
+  runs AI/subscription profile (restore, webhook, duplicate transaction)
+context:
+  scaffold_script: place-files.sh

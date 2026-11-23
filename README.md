@@ -30,13 +30,18 @@ The skill is manual-only (`disable-model-invocation: true`).
 
 Verified by running them:
 - `python3 skills/mobile-release-guard/scripts/validate_skill.py skills/mobile-release-guard` (frontmatter, links, all SEC/APP IDs)
-- `cd skills/mobile-release-guard && python3 -m unittest discover -s tests` (30 tests: spec coverage, script behavior, secret redaction, stack detection on 7 fixtures)
+- `cd skills/mobile-release-guard && python3 -m unittest discover -s tests` (31 tests: spec coverage, script behavior, secret redaction and public-ID separation, stack detection on 7 fixtures)
 - `curl | bash` installer, tested into a temporary directory
 
+Evals (`skills/mobile-release-guard/evals/`, 16 cases in the skill-creator folder format: 6 scenarios + 10 negative cases):
+- They were run **inline by the skill's author in one session, without subagents or a baseline**, then graded (84/84 assertions). Mechanical assertions (files unchanged by sha256, seeded fake secrets never printed, no guarantee wording, no invented version numbers) are real checks. The judged ones rest on the author's own reports, so the score is a self-consistency check, not independent proof.
+- Building them found and fixed real defects (scanner missed names ending in `_KEY`, no "no mobile project" rule, missing NOT_APPLICABLE conditions for APP-09/10/11/13/14).
+- For real, independent runs with and without the skill, use Claude Code's own runner from the skill directory (billed model runs): `claude plugin eval . --allow-tools Write,Edit,Bash --scaffold`.
+
 Not verified, be aware:
-- The 16 behavioral evals (`evals/evals.json`, 6 scenarios + 10 negative cases) are checked by a **static trace** (`tests/test_eval_mechanisms.py`: each expected behavior must be backed by a rule in the skill or a script that runs). They have **not** been run as live end-to-end model sessions.
-- App Store and Google Play rules were written from existing knowledge, not re-checked against the live policy pages; OWASP/CWE mappings are not web-verified. The skill itself tells the auditor to verify policies at run time and to report `UNVERIFIED` when it cannot.
+- App Store and Google Play rules were written from existing knowledge, not re-checked against the live policy pages; OWASP/CWE mappings are not web-verified. The skill tells the auditor to verify policies at run time and report `UNVERIFIED` when it cannot.
 - Not tried on a real production app yet.
+- skill-creator's `quick_validate` rejects `argument-hint` and `disable-model-invocation`: its schema targets Claude.ai `.skill` packages. Both fields are valid in Claude Code and are needed here (manual-only invocation).
 
 ## Uninstall
 

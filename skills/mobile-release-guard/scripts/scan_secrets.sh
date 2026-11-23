@@ -21,7 +21,13 @@ scan AWS_ACCESS_KEY   'AKIA[0-9A-Z]{16}'
 scan LLM_API_KEY      '(sk-ant-[A-Za-z0-9_-]{16,}|sk-[A-Za-z0-9]{20,})'
 scan SLACK_TOKEN      'xox[abprs]-[A-Za-z0-9-]{10,}'
 scan GITHUB_TOKEN     'gh[pousr]_[A-Za-z0-9]{30,}'
-scan HARDCODED_SECRET '[A-Za-z_]*(secret|token|passw(or)?d|credential|api_?key|private_?key|[a-z]Key)[A-Za-z_]*[[:space:]]*[:=][[:space:]]*["'"'"'][^"'"'"']{8,}["'"'"']' i
+# Assignments of string literals to secret-looking names. Names that contain anon/publishable or
+# NEXT_PUBLIC_/EXPO_PUBLIC_ are public client identifiers: labelled apart, never as secrets.
+grep -rInEi "${EXCL[@]}" -e "[A-Za-z_]*(secret|token|passw(or)?d|credential)[A-Za-z_]*[[:space:]]*[:=][[:space:]]*[\"'][^\"']{8,}[\"']" \
+  -e "[A-Za-z_]*key[[:space:]]*[:=][[:space:]]*[\"'][^\"']{8,}[\"']" -- "$dir" 2>/dev/null \
+  | awk -F: -v d="$dir/" '{ f=$1; sub(d,"",f); c=tolower(substr($0, length($1)+length($2)+3));
+      t=(c ~ /(anon|publishable|next_public_|expo_public_)/) ? "PUBLIC_CLIENT_ID" : "HARDCODED_SECRET";
+      print t, f ":" $2 }'
 
 # Env/credential files present in the tree (names only, never contents).
 find "$dir" \( -name node_modules -o -name Pods -o -name build -o -name .git \) -prune -o \

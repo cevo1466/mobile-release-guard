@@ -33,7 +33,7 @@ class EvalTrace(unittest.TestCase):
         for i in (8, 9, 10, 11, 13, 14, 24):
             s = section("references/appstore-review.md", f"APP-{i:02d}")
             self.assertIn("not_applicable", s, f"APP-{i:02d} lacks explicit NOT_APPLICABLE")
-        offline = run("detect_stack.sh", SKILL / "evals/fixtures/offline-ios").stdout.split()
+        offline = run("detect_stack.sh", SKILL / "evals/offline-app/files").stdout.split()
         self.assertNotIn("firebase", offline)
         self.assertNotIn("storekit", offline)
 
@@ -92,10 +92,17 @@ class EvalTrace(unittest.TestCase):
 
     def test_scan_secrets_never_prints_values_and_finds_seeded_keys(self):
         for fx in ("swiftui-firebase-storekit2", "ai-subscription"):
-            out = run("scan_secrets.sh", SKILL / "evals/fixtures" / fx)
+            out = run("scan_secrets.sh", SKILL / "evals" / fx / "files")
             self.assertIn("HARDCODED_SECRET", out.stdout, fx)
             self.assertNotRegex(out.stdout + out.stderr, r"FAKE_\w*DO_NOT_PRINT")
-        self.assertEqual(run("scan_secrets.sh", SKILL / "evals/fixtures/offline-ios").stdout.strip(), "")
+        self.assertEqual(run("scan_secrets.sh", SKILL / "evals/offline-app/files").stdout.strip(), "")
+
+    def test_scanner_separates_public_client_ids_from_secrets(self):
+        fx = SKILL / "evals/public-ids-not-secrets/files"
+        out = run("scan_secrets.sh", fx).stdout
+        self.assertRegex(out, r"PUBLIC_CLIENT_ID .*supabase\.ts:\d+")
+        self.assertNotIn("HARDCODED_SECRET", out)
+        self.assertNotRegex(out, r"FAKE-ANON")
 
 
 if __name__ == "__main__":

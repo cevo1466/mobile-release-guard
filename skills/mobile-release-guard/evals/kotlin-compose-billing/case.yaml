@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: kotlin-compose-billing
+expected_outcome: |
+  runs GP checks, not APP checks
+  SEC-15 FAIL (R8 disabled in release)
+  SEC-17/GP-18 FAIL or PARTIAL (allowBackup true)
+  GP-07 UNVERIFIED or FAIL (no server purchase verification visible)
+  does not require Sign in with Apple, ATT or other iOS-only rules
+context:
+  scaffold_script: place-files.sh

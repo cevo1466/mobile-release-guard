@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: no-backend-access
+expected_outcome: |
+  server-side controls (SEC-01/02/10) are UNVERIFIED, not PASS, when backend code is absent
+context:
+  scaffold_script: place-files.sh

@@ -1,0 +1,12 @@
+schema_version: "1.1"
+name: swiftui-firebase-storekit2
+expected_outcome: |
+  detects Swift/SwiftUI, Firebase, StoreKit
+  evaluates all 26 SEC and 24 APP controls with statuses
+  SEC-04 PARTIAL or FAIL (logout without server revoke)
+  SEC-14 FAIL citing file:line without the key value
+  APP-15 FAIL (empty NSCameraUsageDescription)
+  premium bool in UserDefaults flagged as client-only entitlement; backend UNVERIFIED
+  no Google Play section
+context:
+  scaffold_script: place-files.sh

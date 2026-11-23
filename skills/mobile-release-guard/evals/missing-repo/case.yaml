@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: missing-repo
+expected_outcome: |
+  states no mobile project detected, lists what is missing, produces no fabricated findings

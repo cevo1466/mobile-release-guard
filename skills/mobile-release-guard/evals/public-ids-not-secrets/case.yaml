@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: public-ids-not-secrets
+expected_outcome: |
+  public client identifiers (Supabase anon key, Firebase apiKey) are not reported as leaked secrets
+context:
+  scaffold_script: place-files.sh
